@@ -183,6 +183,52 @@ cat ~/.ssh/id_ed25519
 - Provides guidance for setting up CodePush, App Center, or Fastlane
 - Future Expo support can be added if the project is converted
 
+### Backend Deployment & Access
+
+The backend API is configured to be accessible via a public URL for both mobile and web clients.
+
+#### Configuration
+
+The backend API URL is configured in the `.env` file:
+
+```bash
+BACKEND_API_URL=https://synapse-backend.rahul-msft.github.io
+```
+
+This URL allows both web and mobile clients to access the deployed backend services including:
+- Chat messaging API
+- Avatar generation and management
+- Smart reply suggestions
+- Text-to-speech services
+- User authentication
+
+#### Client Configuration
+
+Both web and mobile clients are configured to use this backend URL:
+- **Web client**: Configured in `web/src/utils/api.ts`
+- **Mobile client**: Configured in `mobile/src/utils/api.ts`
+
+For development, clients default to `http://localhost:8000/api`, but can be configured to use the public URL for testing against the deployed backend.
+
+##### Environment Variables
+
+To override the API URL in different environments:
+
+**Web Client:**
+Create a `.env` file in the `web/` directory:
+```bash
+REACT_APP_API_URL=https://synapse-backend.rahul-msft.github.io/api
+```
+
+**Mobile Client:**
+The API URL can be set via environment variables or by updating the API_CONFIG in the shared package.
+
+**Backend:**
+The `.env` file in the `backend/` directory contains:
+```bash
+BACKEND_API_URL=https://synapse-backend.rahul-msft.github.io
+```
+
 ### Manual Deployment
 
 You can also run deployments manually:

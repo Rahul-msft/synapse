@@ -8,13 +8,14 @@ import {
   Avatar,
   AvatarGenerationRequest,
   ApiResponse,
-  createApiResponse
+  createApiResponse,
+  API_CONFIG
 } from '@synapse/shared';
 
 // Configure axios instance for mobile
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api', // For Android emulator, use 10.0.2.2:8000
-  timeout: 30000,
+  baseURL: API_CONFIG.getBaseUrl(), // For Android emulator, use 10.0.2.2:8000 for local development
+  timeout: API_CONFIG.TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
   },
