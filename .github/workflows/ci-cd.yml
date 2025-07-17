@@ -118,7 +118,7 @@ jobs:
     - name: Cache web build
       uses: actions/cache@v3
       with:
-        path: web/dist
+        path: web/build
         key: web-build-${{ github.sha }}
 
   # Deploy backend to server via SSH
@@ -238,7 +238,7 @@ jobs:
     - name: Upload to GitHub Pages
       uses: actions/upload-pages-artifact@v3
       with:
-        path: web/dist
+        path: web/build
 
     - name: Deploy to GitHub Pages
       id: deployment
