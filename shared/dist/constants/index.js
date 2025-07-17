@@ -1,21 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ERROR_CODES = exports.UI_CONFIG = exports.SMART_REPLY_CONFIG = exports.TTS_CONFIG = exports.AVATAR_CONFIG = exports.SOCKET_EVENTS = exports.API_ENDPOINTS = exports.API_CONFIG = void 0;
 // API Configuration
-exports.API_CONFIG = {
+export const API_CONFIG = {
     DEFAULT_BASE_URL: 'http://localhost:8000/api',
     PRODUCTION_BASE_URL: 'https://synapse-backend.rahul-msft.github.io/api',
     TIMEOUT: 30000,
     getBaseUrl: () => {
         // This can be overridden by environment variables in each client
         if (typeof process !== 'undefined' && process.env) {
-            return process.env.REACT_APP_API_URL || process.env.API_URL || exports.API_CONFIG.DEFAULT_BASE_URL;
+            return process.env.REACT_APP_API_URL || process.env.API_URL || API_CONFIG.DEFAULT_BASE_URL;
         }
-        return exports.API_CONFIG.DEFAULT_BASE_URL;
+        return API_CONFIG.DEFAULT_BASE_URL;
     }
 };
 // API endpoints
-exports.API_ENDPOINTS = {
+export const API_ENDPOINTS = {
     // Auth endpoints
     AUTH: {
         LOGIN: '/auth/login',
@@ -58,7 +55,7 @@ exports.API_ENDPOINTS = {
     }
 };
 // WebSocket events
-exports.SOCKET_EVENTS = {
+export const SOCKET_EVENTS = {
     CONNECTION: 'connection',
     DISCONNECT: 'disconnect',
     // Chat events
@@ -77,7 +74,7 @@ exports.SOCKET_EVENTS = {
     ERROR: 'error'
 };
 // Avatar configuration
-exports.AVATAR_CONFIG = {
+export const AVATAR_CONFIG = {
     HAIR_COLORS: [
         '#000000', // Black
         '#654321', // Brown
@@ -128,7 +125,7 @@ exports.AVATAR_CONFIG = {
     ]
 };
 // TTS configuration
-exports.TTS_CONFIG = {
+export const TTS_CONFIG = {
     DEFAULT_SPEED: 1.0,
     DEFAULT_PITCH: 1.0,
     MIN_SPEED: 0.5,
@@ -157,7 +154,7 @@ exports.TTS_CONFIG = {
     ]
 };
 // Smart Reply configuration
-exports.SMART_REPLY_CONFIG = {
+export const SMART_REPLY_CONFIG = {
     MAX_SUGGESTIONS: 3,
     MIN_CONFIDENCE: 0.5,
     CONTEXT_WINDOW: 10, // Number of previous messages to consider
@@ -171,7 +168,7 @@ exports.SMART_REPLY_CONFIG = {
     }
 };
 // UI configuration
-exports.UI_CONFIG = {
+export const UI_CONFIG = {
     CHAT: {
         MESSAGE_PAGE_SIZE: 50,
         TYPING_TIMEOUT: 3000, // ms
@@ -193,7 +190,7 @@ exports.UI_CONFIG = {
     }
 };
 // Error codes
-exports.ERROR_CODES = {
+export const ERROR_CODES = {
     // Authentication errors
     UNAUTHORIZED: 'UNAUTHORIZED',
     FORBIDDEN: 'FORBIDDEN',
