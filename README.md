@@ -126,7 +126,8 @@ This repository includes a comprehensive CI/CD pipeline that automatically build
 **New to deployment setup?** Use these helpful resources:
 
 - **📝 [`deployment-secrets-template.md`](./deployment-secrets-template.md)** - Complete reference for all required secrets
-- **🔧 [`scripts/generate-ssh-key.sh`](./scripts/generate-ssh-key.sh)** - Interactive SSH key generation script  
+- **🔧 [`scripts/generate-ssh-key.sh`](./scripts/generate-ssh-key.sh)** - Interactive SSH key generation script
+- **🔐 [`scripts/setup-github-secrets.sh`](./scripts/setup-github-secrets.sh)** - Interactive GitHub secrets configuration guide
 - **📖 [Detailed setup instructions](#setting-up-deployment-secrets)** - Step-by-step guide below
 
 ### GitHub Actions Workflow
@@ -155,16 +156,26 @@ To enable full deployment functionality, configure the following secrets in your
 
 ### Setting up Deployment Secrets
 
-#### Quick Setup with Helper Script
+#### Quick Setup with Helper Scripts
 
-For an interactive guided setup, use the provided SSH key generation script:
+For a complete interactive setup experience, use our automated helper scripts:
 
 ```bash
-# Run the interactive SSH key generator
+# Option 1: Full guided setup (recommended for beginners)
+./scripts/setup-github-secrets.sh
+
+# Option 2: Just generate SSH keys (if you prefer manual GitHub setup)
 ./scripts/generate-ssh-key.sh
 ```
 
-This script will:
+**The complete setup script** (`setup-github-secrets.sh`) will:
+- Guide you through the entire GitHub secrets configuration process
+- Help with SSH key generation if needed (calls generate-ssh-key.sh automatically)
+- Provide step-by-step instructions for navigating GitHub's interface
+- Verify all required secrets are properly configured
+- Give you deployment testing guidance
+
+**The SSH key generator** (`generate-ssh-key.sh`) will:
 - Guide you through SSH key generation with recommended security settings
 - Generate Ed25519 or RSA keys based on your preference
 - Display the private key content for easy copying to GitHub Secrets
