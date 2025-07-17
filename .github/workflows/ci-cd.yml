@@ -145,53 +145,138 @@ jobs:
         npm run build:shared
         npm run build:backend
 
+    - name: Validate deployment secrets
+      run: |
+        echo "🔍 Validating required deployment secrets..."
+        
+        # Function to check if a secret is set and not empty
+        check_secret() {
+          local secret_name="$1"
+          local secret_value="$2"
+          
+          if [ -z "${secret_value}" ]; then
+            echo "❌ ERROR: Required secret '${secret_name}' is not set or is empty"
+            return 1
+          else
+            echo "✅ Secret '${secret_name}' is configured"
+            return 0
+          fi
+        }
+        
+        # Check all required secrets
+        all_secrets_valid=true
+        check_secret "SSH_PRIVATE_KEY" "${{ secrets.SSH_PRIVATE_KEY }}" || all_secrets_valid=false
+        check_secret "REMOTE_USER" "${{ secrets.REMOTE_USER }}" || all_secrets_valid=false
+        check_secret "REMOTE_HOST" "${{ secrets.REMOTE_HOST }}" || all_secrets_valid=false
+        check_secret "REMOTE_PATH" "${{ secrets.REMOTE_PATH }}" || all_secrets_valid=false
+        
+        if [ "$all_secrets_valid" = true ]; then
+          echo ""
+          echo "✅ All required secrets are configured. Proceeding with deployment..."
+          echo ""
+          echo "📋 Deployment Configuration Summary:"
+          echo "   • Target Host: ${{ secrets.REMOTE_HOST }}"
+          echo "   • SSH User: ${{ secrets.REMOTE_USER }}"
+          echo "   • Remote Path: ${{ secrets.REMOTE_PATH }}"
+          echo "   • SSH Key: [CONFIGURED]"
+        else
+          echo ""
+          echo "❌ Missing required secrets. Deployment cannot proceed."
+          echo ""
+          echo "📚 To fix this issue:"
+          echo "1. Go to your GitHub repository"
+          echo "2. Navigate to Settings → Secrets and variables → Actions"
+          echo "3. Add the missing secrets with appropriate values"
+          echo ""
+          echo "🔑 Required secrets for backend deployment:"
+          echo "   • SSH_PRIVATE_KEY: Private SSH key for server access"
+          echo "   • REMOTE_USER: Username for SSH connection (e.g., ubuntu, deploy)"
+          echo "   • REMOTE_HOST: Server hostname or IP address"
+          echo "   • REMOTE_PATH: Deployment path on the server"
+          echo ""
+          echo "📖 See README.md for detailed setup instructions"
+          exit 1
+        fi
+
     - name: Deploy to server
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        debug: true
         script: |
+          echo "🚀 Starting backend deployment..."
+          echo "📍 Deployment target: $(hostname)"
+          echo "👤 User: $(whoami)"
+          echo "📂 Working directory: $(pwd)"
+          echo ""
+          
           # Navigate to the application directory
+          echo "📁 Navigating to deployment path: ${{ secrets.REMOTE_PATH }}"
           cd ${{ secrets.REMOTE_PATH }}
           
           # Create backup of current deployment
           if [ -d "current" ]; then
-            cp -r current backup-$(date +%Y%m%d-%H%M%S)
+            backup_name="backup-$(date +%Y%m%d-%H%M%S)"
+            echo "💾 Creating backup: ${backup_name}"
+            cp -r current "${backup_name}"
+          else
+            echo "ℹ️  No existing deployment found, skipping backup"
           fi
           
           # Clone/pull latest code
           if [ -d "synapse-backend" ]; then
+            echo "🔄 Updating existing repository..."
             cd synapse-backend
             git pull origin main
           else
+            echo "📥 Cloning repository for the first time..."
             git clone https://github.com/${{ github.repository }}.git synapse-backend
             cd synapse-backend
           fi
           
           # Install dependencies and build
+          echo "📦 Installing dependencies..."
           npm ci --production
+          echo "🔨 Building shared package..."
           npm run build:shared
+          echo "🔨 Building backend..."
           npm run build:backend
           
           # Copy built files to deployment directory
+          echo "📋 Copying built files to deployment directory..."
           mkdir -p ../current
           cp -r backend/dist/* ../current/
           cp backend/package.json ../current/
           cp -r shared/dist ../current/shared/
           
           # Install production dependencies in deployment directory
+          echo "📦 Installing production dependencies in deployment directory..."
           cd ../current
           npm ci --production --ignore-scripts
           
           # Restart the application (assumes PM2 or similar process manager)
+          echo "🔄 Restarting application..."
           if command -v pm2 &> /dev/null; then
+            echo "   Using PM2 process manager"
             pm2 restart synapse-backend || pm2 start npm --name "synapse-backend" -- start
+            pm2 list
           else
+            echo "   Using basic process management (PM2 not found)"
             # Kill existing process and start new one
             pkill -f "node.*synapse" || true
             nohup npm start > app.log 2>&1 &
+            echo "   Application started in background"
           fi
+          
+          echo ""
+          echo "✅ Backend deployment completed successfully!"
+          echo "📊 Deployment summary:"
+          echo "   • Repository: ${{ github.repository }}"
+          echo "   • Commit: ${{ github.sha }}"
+          echo "   • Branch: ${{ github.ref_name }}"
+          echo "   • Deployed to: ${{ secrets.REMOTE_PATH }}/current"
 
   # Deploy web app to GitHub Pages
   deploy-web:

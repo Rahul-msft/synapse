@@ -132,6 +132,8 @@ The CI/CD pipeline (`.github/workflows/ci-cd.yml`) includes the following jobs:
 
 ### Required Secrets
 
+⚠️ **Important**: All backend deployment secrets must be configured for successful deployment. The CI/CD pipeline will validate these secrets and fail with clear error messages if any are missing.
+
 To enable full deployment functionality, configure the following secrets in your GitHub repository settings:
 
 #### Backend Deployment (SSH)
