@@ -6,7 +6,9 @@ import {
   Paper,
   Chip
 } from '@mui/material';
-import { ChatMessage, MessageStatus, getRelativeTime } from '@synapse/shared';
+import { ChatMessage } from '@synapse/shared';
+import { MessageStatus } from '../../utils/messageTypes';
+import { getRelativeTime } from '../../utils/dateUtils';
 
 interface MessageBubbleProps {
   message: ChatMessage;

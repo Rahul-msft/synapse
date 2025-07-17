@@ -5,7 +5,8 @@ import {
   Typography,
   Slide
 } from '@mui/material';
-import { SmartReply, ReplyCategory } from '@synapse/shared';
+import { SmartReply } from '@synapse/shared';
+import { ReplyCategory } from '../../utils/messageTypes';
 
 interface SmartReplySuggestionsProps {
   suggestions: SmartReply[];

@@ -13,7 +13,8 @@ import {
   CircularProgress
 } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
-import { Chat, getRelativeTime } from '@synapse/shared';
+import { Chat } from '@synapse/shared';
+import { getRelativeTime } from '../../utils/dateUtils';
 import { useQuery } from 'react-query';
 import { fetchChats } from '../../utils/api';
 
