@@ -7,13 +7,14 @@ import {
   Avatar,
   AvatarGenerationRequest,
   ApiResponse,
-  createApiResponse
+  createApiResponse,
+  API_CONFIG
 } from '@synapse/shared';
 
 // Configure axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
-  timeout: 30000,
+  baseURL: API_CONFIG.getBaseUrl(),
+  timeout: API_CONFIG.TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
   },

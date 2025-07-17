@@ -1,6 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ERROR_CODES = exports.UI_CONFIG = exports.SMART_REPLY_CONFIG = exports.TTS_CONFIG = exports.AVATAR_CONFIG = exports.SOCKET_EVENTS = exports.API_ENDPOINTS = void 0;
+exports.ERROR_CODES = exports.UI_CONFIG = exports.SMART_REPLY_CONFIG = exports.TTS_CONFIG = exports.AVATAR_CONFIG = exports.SOCKET_EVENTS = exports.API_ENDPOINTS = exports.API_CONFIG = void 0;
+// API Configuration
+exports.API_CONFIG = {
+    DEFAULT_BASE_URL: 'http://localhost:8000/api',
+    PRODUCTION_BASE_URL: 'https://synapse-backend.rahul-msft.github.io/api',
+    TIMEOUT: 30000,
+    getBaseUrl: () => {
+        // This can be overridden by environment variables in each client
+        if (typeof process !== 'undefined' && process.env) {
+            return process.env.REACT_APP_API_URL || process.env.API_URL || exports.API_CONFIG.DEFAULT_BASE_URL;
+        }
+        return exports.API_CONFIG.DEFAULT_BASE_URL;
+    }
+};
 // API endpoints
 exports.API_ENDPOINTS = {
     // Auth endpoints

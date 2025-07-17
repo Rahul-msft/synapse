@@ -1,3 +1,18 @@
+// API Configuration
+export const API_CONFIG = {
+  DEFAULT_BASE_URL: 'http://localhost:8000/api',
+  PRODUCTION_BASE_URL: 'https://synapse-backend.rahul-msft.github.io/api',
+  TIMEOUT: 30000,
+  
+  getBaseUrl: () => {
+    // This can be overridden by environment variables in each client
+    if (typeof process !== 'undefined' && process.env) {
+      return process.env.REACT_APP_API_URL || process.env.API_URL || API_CONFIG.DEFAULT_BASE_URL;
+    }
+    return API_CONFIG.DEFAULT_BASE_URL;
+  }
+} as const;
+
 // API endpoints
 export const API_ENDPOINTS = {
   // Auth endpoints

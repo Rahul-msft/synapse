@@ -1,3 +1,9 @@
+export declare const API_CONFIG: {
+    readonly DEFAULT_BASE_URL: "http://localhost:8000/api";
+    readonly PRODUCTION_BASE_URL: "https://synapse-backend.rahul-msft.github.io/api";
+    readonly TIMEOUT: 30000;
+    readonly getBaseUrl: () => string;
+};
 export declare const API_ENDPOINTS: {
     readonly AUTH: {
         readonly LOGIN: "/auth/login";
