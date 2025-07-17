@@ -1,23 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.createApiResponse = createApiResponse;
-exports.formatDate = formatDate;
-exports.parseDate = parseDate;
-exports.generateId = generateId;
-exports.isValidEmail = isValidEmail;
-exports.isValidUsername = isValidUsername;
-exports.sanitizeText = sanitizeText;
-exports.truncateText = truncateText;
-exports.formatFileSize = formatFileSize;
-exports.debounce = debounce;
-exports.isEmpty = isEmpty;
-exports.getRelativeTime = getRelativeTime;
-exports.capitalize = capitalize;
-exports.getAvatarInitials = getAvatarInitials;
 /**
  * Utility function to create standardized API responses
  */
-function createApiResponse(success, data, error) {
+export function createApiResponse(success, data, error) {
     const response = {
         success,
         timestamp: new Date()
@@ -35,32 +19,32 @@ function createApiResponse(success, data, error) {
 /**
  * Utility function to format dates consistently
  */
-function formatDate(date) {
+export function formatDate(date) {
     return date.toISOString();
 }
 /**
  * Utility function to parse dates from API responses
  */
-function parseDate(dateString) {
+export function parseDate(dateString) {
     return new Date(dateString);
 }
 /**
  * Utility function to generate unique IDs
  */
-function generateId() {
+export function generateId() {
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 }
 /**
  * Utility function to validate email addresses
  */
-function isValidEmail(email) {
+export function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 /**
  * Utility function to validate usernames
  */
-function isValidUsername(username) {
+export function isValidUsername(username) {
     // Username should be 3-20 characters, alphanumeric plus underscore
     const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
     return usernameRegex.test(username);
@@ -68,13 +52,13 @@ function isValidUsername(username) {
 /**
  * Utility function to sanitize text input
  */
-function sanitizeText(text) {
+export function sanitizeText(text) {
     return text.trim().replace(/\s+/g, ' ');
 }
 /**
  * Utility function to truncate text
  */
-function truncateText(text, maxLength) {
+export function truncateText(text, maxLength) {
     if (text.length <= maxLength) {
         return text;
     }
@@ -83,7 +67,7 @@ function truncateText(text, maxLength) {
 /**
  * Utility function to format file sizes
  */
-function formatFileSize(bytes) {
+export function formatFileSize(bytes) {
     if (bytes === 0)
         return '0 Bytes';
     const k = 1024;
@@ -94,7 +78,7 @@ function formatFileSize(bytes) {
 /**
  * Utility function to debounce function calls
  */
-function debounce(func, wait) {
+export function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
         const later = () => {
@@ -108,7 +92,7 @@ function debounce(func, wait) {
 /**
  * Utility function to check if a value is empty
  */
-function isEmpty(value) {
+export function isEmpty(value) {
     if (value === null || value === undefined) {
         return true;
     }
@@ -126,7 +110,7 @@ function isEmpty(value) {
 /**
  * Utility function to get relative time
  */
-function getRelativeTime(date) {
+export function getRelativeTime(date) {
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
     if (diffInSeconds < 60) {
@@ -149,7 +133,7 @@ function getRelativeTime(date) {
 /**
  * Utility function to capitalize first letter
  */
-function capitalize(text) {
+export function capitalize(text) {
     if (!text)
         return text;
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
@@ -157,7 +141,7 @@ function capitalize(text) {
 /**
  * Utility function to generate avatar initials
  */
-function getAvatarInitials(name) {
+export function getAvatarInitials(name) {
     if (!name)
         return '';
     const parts = name.trim().split(' ');
