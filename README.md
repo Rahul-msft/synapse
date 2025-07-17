@@ -121,6 +121,14 @@ Each package has its own development workflow. See individual README files in ea
 
 This repository includes a comprehensive CI/CD pipeline that automatically builds, tests, and deploys the application.
 
+### 🚀 Quick Start: Deployment Secrets Setup
+
+**New to deployment setup?** Use these helpful resources:
+
+- **📝 [`deployment-secrets-template.md`](./deployment-secrets-template.md)** - Complete reference for all required secrets
+- **🔧 [`scripts/generate-ssh-key.sh`](./scripts/generate-ssh-key.sh)** - Interactive SSH key generation script  
+- **📖 [Detailed setup instructions](#setting-up-deployment-secrets)** - Step-by-step guide below
+
 ### GitHub Actions Workflow
 
 The CI/CD pipeline (`.github/workflows/ci-cd.yml`) includes the following jobs:
@@ -147,23 +155,59 @@ To enable full deployment functionality, configure the following secrets in your
 
 ### Setting up Deployment Secrets
 
-1. Go to your GitHub repository
-2. Navigate to Settings → Secrets and variables → Actions
-3. Click "New repository secret"
-4. Add each required secret with its corresponding value
+#### Quick Setup with Helper Script
 
-#### SSH Key Setup Example
+For an interactive guided setup, use the provided SSH key generation script:
 
 ```bash
-# Generate SSH key pair (if you don't have one)
-ssh-keygen -t ed25519 -C "deploy@synapse-app"
-
-# Add public key to server's authorized_keys
-ssh-copy-id -i ~/.ssh/id_ed25519.pub user@your-server.com
-
-# Copy private key content for GitHub secret
-cat ~/.ssh/id_ed25519
+# Run the interactive SSH key generator
+./scripts/generate-ssh-key.sh
 ```
+
+This script will:
+- Guide you through SSH key generation with recommended security settings
+- Generate Ed25519 or RSA keys based on your preference
+- Display the private key content for easy copying to GitHub Secrets
+- Provide clear next steps for server setup and GitHub configuration
+
+#### Manual Setup Steps
+
+1. **Generate SSH Key (if you don't have one)**:
+   ```bash
+   # Generate Ed25519 key (recommended)
+   ssh-keygen -t ed25519 -C "deploy@synapse-app" -f ~/.ssh/synapse_deploy_ed25519
+   
+   # Or generate RSA key (traditional)
+   ssh-keygen -t rsa -b 4096 -C "deploy@synapse-app" -f ~/.ssh/synapse_deploy_rsa
+   ```
+
+2. **Add public key to your server**:
+   ```bash
+   # Copy public key to server
+   ssh-copy-id -i ~/.ssh/synapse_deploy_ed25519.pub user@your-server.com
+   
+   # Or manually add to server's ~/.ssh/authorized_keys
+   cat ~/.ssh/synapse_deploy_ed25519.pub | ssh user@your-server.com "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+   ```
+
+3. **Configure GitHub repository secrets**:
+   - Go to your GitHub repository
+   - Navigate to **Settings → Secrets and variables → Actions**
+   - Click **"New repository secret"**
+   - Add each required secret with its corresponding value:
+
+   ```bash
+   # Get private key content for SSH_PRIVATE_KEY secret
+   cat ~/.ssh/synapse_deploy_ed25519
+   ```
+
+#### Detailed Secret Descriptions
+
+For complete descriptions of all required secrets, see [`deployment-secrets-template.md`](./deployment-secrets-template.md). This template includes:
+- Detailed explanations of each secret
+- Security best practices
+- Troubleshooting tips
+- Example values and formats
 
 ### Deployment Process
 
