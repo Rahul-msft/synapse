@@ -15,7 +15,7 @@ router.get('/voices', async (req: Request, res: Response) => {
   try {
     // TODO: In a real implementation, this would query available voices from TTS service
     // For now, return the configured mock voices
-    const voices: TTSVoice[] = TTS_CONFIG.VOICES;
+    const voices: TTSVoice[] = [...TTS_CONFIG.VOICES];
 
     console.log(`🎵 TTS voices requested - returning ${voices.length} available voices`);
 

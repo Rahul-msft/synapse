@@ -16,9 +16,9 @@ import {
   CircularProgress,
   Tabs,
   Tab,
-  Alert,
   IconButton
 } from '@mui/material';
+import { Alert } from '@mui/material';
 import {
   CloudUpload as UploadIcon,
   Refresh as RefreshIcon,
@@ -310,7 +310,7 @@ function AvatarCreator({ onAvatarCreated }: AvatarCreatorProps) {
                   </Typography>
                 </Paper>
                 
-                {generateAvatarMutation.error && (
+                {!!generateAvatarMutation.error && (
                   <Alert severity="error" sx={{ mt: 2 }}>
                     Failed to generate avatar. Please try again.
                   </Alert>
@@ -380,7 +380,7 @@ function AvatarCreator({ onAvatarCreated }: AvatarCreatorProps) {
                   )}
                 </Button>
 
-                {uploadPhotoMutation.error && (
+                {!!uploadPhotoMutation.error && (
                   <Alert severity="error" sx={{ mt: 2 }}>
                     Failed to process photo. Please try again.
                   </Alert>
