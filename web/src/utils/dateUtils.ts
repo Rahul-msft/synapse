@@ -1,8 +1,9 @@
 /**
  * Utility function to get relative time
  */
-export function getRelativeTime(date: Date): string {
+export function getRelativeTime(dateInput: Date | string | number): string {
   const now = new Date();
+  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
   
   if (diffInSeconds < 60) {
